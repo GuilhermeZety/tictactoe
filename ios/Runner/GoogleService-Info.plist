@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>361052894790-h0k3nlgs1thdc4j21sn12vfd7b5p0e6i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.361052894790-h0k3nlgs1thdc4j21sn12vfd7b5p0e6i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCUFqGYcJ8ahupkC6enFH2Yhrq86Mj_ltE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>361052894790</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>br.com.zety.tictactoe</string>
+	<key>PROJECT_ID</key>
+	<string>tictactoe-z</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tictactoe-z.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:361052894790:ios:63756bcd765afb450bfc47</string>
+	<key>DATABASE_URL</key>
+	<string>https://tictactoe-z-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
