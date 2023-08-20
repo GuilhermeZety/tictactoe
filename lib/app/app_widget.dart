@@ -41,6 +41,10 @@ class _AppWidgetState extends State<AppWidget> {
       supportedLocales: const [
         Locale('pt'),
       ],
+      builder: (context, child) {
+        child = BotToastInit()(context, child);
+        return child;
+      },
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,

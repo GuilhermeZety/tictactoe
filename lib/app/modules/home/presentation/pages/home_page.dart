@@ -1,18 +1,14 @@
-import 'package:confetti/confetti.dart';
-import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
-import 'package:tictactoe/app/core/common/extensions/context_extension.dart';
+import 'package:tictactoe/app/core/common/constants/app_routes.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
+import 'package:tictactoe/app/modules/home/presentation/cubit/home_cubit.dart';
 import 'package:tictactoe/app/ui/components/button.dart';
-import 'package:tictactoe/app/ui/components/custom_checkbox.dart';
-import 'package:tictactoe/app/ui/components/input.dart';
-import 'package:tictactoe/app/ui/components/loader.dart';
-import 'package:tictactoe/app/ui/components/panel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,94 +18,60 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late ConfettiController _centerController;
-  @override
-  void initState() {
-    super.initState();
-    _centerController = ConfettiController(duration: const Duration(seconds: 1));
-  }
+  HomeCubit cubit = HomeCubit();
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldGradientBackground(
-      gradient: AppColors.backgrondGradient,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Stack(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset(
-                      AppAssets.logo,
-                      width: 130,
-                    ).hero('logo'),
-                    const Gap(20),
-                    Panel(
-                      child: SeparatedColumn(
-                        separatorBuilder: () => const Gap(20),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: ScaffoldGradientBackground(
+        gradient: AppColors.backgrondGradient,
+        body: SafeArea(
+          child: BlocListener<HomeCubit, HomeState>(
+            bloc: cubit,
+            listener: (context, state) {
+              if (state is HomeNewRoom) {
+                Navigator.of(context).pushNamed(AppRoutes.newRoom, arguments: state.roomId);
+              }
+            },
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 500,
+                ),
+                child: Container(
+                  height: double.infinity,
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        AppAssets.logo,
+                        width: 130,
+                      ).hero('logo'),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Loader(),
-                          Input(
-                            TextEditingController(text: '5165'),
-                            label: 'Código da sala:',
-                            readOnly: true,
-                          ),
-                          Button.primary(
+                          Button(
                             onPressed: () async {
-                              _centerController.play();
+                              await cubit.createRoom();
                             },
-                            child: const Text('Button'),
-                          ),
-                          Button.secondary(onPressed: () async {}, child: const Text('Button Expanded')).expandedH(),
+                            child: const Text('Criar sala'),
+                          ).expandedH(),
+                          const Gap(20),
                           Button.secondary(
                             onPressed: () async {},
-                            disabled: true,
-                            child: const Text('Button Disabled'),
+                            child: const Text('Entrar em uma sala'),
                           ).expandedH(),
-                          Button.primary(
-                            onPressed: () async {},
-                            color: AppColors.red_600,
-                            child: const Text('Cancelar'),
-                          ).expandedH(),
-                          const Row(
-                            children: [
-                              CustomCheckbox(),
-                              CustomCheckbox(
-                                value: true,
-                              ),
-                              CustomCheckbox(
-                                value: false,
-                                size: 70,
-                              ),
-                            ],
-                          ),
                         ],
                       ),
-                    ),
-                  ],
+                      const Gap(20),
+                    ],
+                  ),
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: ConfettiWidget(
-                  confettiController: _centerController,
-                  // blastDirection: Random().nextInt(360).toDouble(),
-                  blastDirectionality: BlastDirectionality.explosive,
-                  maxBlastForce: 20,
-                  minBlastForce: 5,
-                  emissionFrequency: 0.2,
-
-                  // 10 paticles will pop-up at a time
-                  numberOfParticles: 10,
-
-                  // particles will pop-up
-                  gravity: 0,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
+import 'package:tictactoe/app/core/common/utils/utils.dart';
 
 class Input extends StatefulWidget {
   final String? label;
@@ -19,6 +20,7 @@ class Input extends StatefulWidget {
   final Function()? onTap;
   final FocusNode? focusNode;
   final Widget? prefixIcon;
+  final bool copy;
 
   const Input(
     this.controller, {
@@ -32,6 +34,7 @@ class Input extends StatefulWidget {
     this.minLines,
     this.maxLines,
     this.readOnly = false,
+    this.copy = false,
     this.showError = true,
     this.onTap,
     this.onChange,
@@ -56,6 +59,7 @@ class Input extends StatefulWidget {
     this.onChange,
     this.focusNode,
     this.prefixIcon,
+    this.copy = false,
   });
   @override
   State<Input> createState() => _InputState();
@@ -77,43 +81,82 @@ class _InputState extends State<Input> {
             )
           : null;
     }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        if (widget.label != null) ...[
-          Text(widget.label!, style: const TextStyle(fontWeight: FontWeight.bold)),
-          const Gap(5),
-        ],
-        TextFormField(
-          key: widget.key,
-          onTapOutside: (event) {
-            FocusScope.of(context).unfocus();
-          },
-          controller: widget.controller,
-          autovalidateMode: widget.autovalidateMode,
-          validator: widget.validation,
-          inputFormatters: widget.formatter,
-          keyboardType: widget.keyboard,
-          minLines: widget.minLines,
-          maxLines: widget.maxLines ?? 1,
-          readOnly: widget.readOnly,
-          obscureText: widget.keyboard == TextInputType.visiblePassword ? !visible : false,
-          onChanged: widget.onChange,
-          onTap: widget.onTap,
-          focusNode: widget.focusNode,
-          style: TextStyle(
-            color: AppColors.grey_100.withOpacity(0.5),
-            fontSize: 18,
-          ),
-          decoration: InputDecoration(
-            suffixIcon: suffix,
-            errorMaxLines: 2,
-            // label: widget.label,
-            prefixIcon: widget.prefixIcon,
-            hintText: widget.hint,
-          ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.label != null) ...[
+              Text(widget.label!, style: const TextStyle(fontWeight: FontWeight.bold)),
+              const Gap(5),
+            ],
+            TextFormField(
+              key: widget.key,
+              onTapOutside: (event) {
+                FocusScope.of(context).unfocus();
+              },
+              controller: widget.controller,
+              autovalidateMode: widget.autovalidateMode,
+              validator: widget.validation,
+              inputFormatters: widget.formatter,
+              keyboardType: widget.keyboard,
+              minLines: widget.minLines,
+              maxLines: widget.maxLines ?? 1,
+              readOnly: widget.readOnly,
+              obscureText: widget.keyboard == TextInputType.visiblePassword ? !visible : false,
+              onChanged: widget.onChange,
+              onTap: widget.onTap,
+              focusNode: widget.focusNode,
+              style: TextStyle(
+                color: AppColors.grey_100.withOpacity(0.5),
+                fontSize: 18,
+              ),
+              decoration: InputDecoration(
+                suffixIcon: suffix,
+                errorMaxLines: 2,
+                // label: widget.label,
+                prefixIcon: widget.prefixIcon,
+                hintText: widget.hint,
+              ),
+            ),
+            if (widget.copy) const Gap(15),
+          ],
         ),
+        if (widget.copy)
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: GestureDetector(
+              onTap: () => Utils.copy(context, widget.controller.text),
+              child: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.purple_400,
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.copy_rounded,
+                      size: 14,
+                      color: Colors.white,
+                    ),
+                    Gap(5),
+                    Text(
+                      'Copiar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }

@@ -5,7 +5,7 @@ import 'package:tictactoe/app/core/common/errors/failures.dart';
 import 'package:tictactoe/app/core/common/extensions/color_extension.dart';
 import 'package:tictactoe/app/core/common/utils/vibrate.dart';
 import 'package:tictactoe/app/ui/components/loader.dart';
-import 'package:tictactoe/app/ui/dialogs/toasting.dart';
+import 'package:tictactoe/app/core/common/utils/toasting.dart';
 
 // Custom buttons are created by extending the MaterialButton class
 class Button extends StatefulWidget {
@@ -24,7 +24,7 @@ class Button extends StatefulWidget {
   final Color? color;
 
   // The constructor made all Primary Custom Button
-  Button.primary({
+  Button({
     super.key,
     required this.onPressed,
     required this.child,
@@ -115,18 +115,18 @@ class _ButtonState extends State<Button> {
       } catch (err) {
         if (!mounted) return;
         if (err is TypeError) {
-          Toasting.error(context, title: 'Erro: $err', stackTrace: err.stackTrace);
+          Toasting.error(context, message: 'Erro: $err', stackTrace: err.stackTrace);
           return;
         }
         if (err is Failure) {
-          Toasting.error(context, title: 'Erro: $err', stackTrace: err.stackTrace);
+          Toasting.error(context, message: 'Erro: $err', stackTrace: err.stackTrace);
           return;
         }
         if (err is Exception) {
-          Toasting.error(context, title: 'Erro: $err');
+          Toasting.error(context, message: 'Erro: $err');
           return;
         }
-        Toasting.error(context, title: 'Erro: $err');
+        Toasting.error(context, message: 'Erro: $err');
       }
     };
     super.initState();
