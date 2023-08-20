@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart';
 
+// ignore: must_be_immutable
 class RoomModel extends RoomEntity {
-  const RoomModel({required super.id, required super.hostUuid, super.opponentUuid});
+  RoomModel({required super.id, required super.hostUuid, super.opponentUuid});
 
   RoomModel copyWith({
     int? id,

@@ -8,5 +8,13 @@ sealed class GameState extends Equatable {
 }
 
 final class GameInitial extends GameState {}
+
 final class GameUpdated extends GameState {}
+
 final class GameExit extends GameState {}
+
+final class GameError extends GameState {
+  final String message;
+
+  const GameError({required this.message});
+}

@@ -27,6 +27,7 @@ class NewRoomPage extends StatefulWidget {
 
 class _NewRoomPageState extends State<NewRoomPage> {
   NewRoomCubit cubit = NewRoomCubit();
+
   @override
   void initState() {
     cubit.init(widget.roomID);

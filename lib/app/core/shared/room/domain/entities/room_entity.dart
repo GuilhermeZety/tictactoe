@@ -1,12 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 abstract class RoomEntity extends Equatable {
-  final int id;
-  final String hostUuid;
-  final String? opponentUuid;
+  int id;
+  String hostUuid;
+  String? opponentUuid;
 
-  const RoomEntity({
+  RoomEntity({
     required this.id,
     required this.hostUuid,
     this.opponentUuid,

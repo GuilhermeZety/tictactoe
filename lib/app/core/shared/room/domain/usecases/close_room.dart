@@ -1,29 +1,27 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 import 'package:tictactoe/app/core/common/errors/failures.dart';
 import 'package:tictactoe/app/core/common/features/usecases/usecase.dart';
-import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart';
 import 'package:tictactoe/app/core/shared/room/domain/repositories/room_repository.dart';
 
-class GetRoom extends Usecase<RoomEntity, GetRoomParams> {
+class CloseRoom extends Usecase<bool, CloseRoomParams> {
   final RoomRepository repository;
 
-  GetRoom({
+  CloseRoom({
     required this.repository,
   });
 
   @override
-  Future<Either<Failure, RoomEntity>> call(
-    GetRoomParams params,
+  Future<Either<Failure, bool>> call(
+    CloseRoomParams params,
   ) async {
-    return await repository.getRoom(params.roomId);
+    return await repository.closeRoom(params.roomId);
   }
 }
 
-class GetRoomParams {
+class CloseRoomParams {
   final int roomId;
 
-  GetRoomParams({
+  CloseRoomParams({
     required this.roomId,
   });
 }

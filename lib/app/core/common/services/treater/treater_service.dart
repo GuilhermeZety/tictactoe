@@ -14,8 +14,26 @@ class TreaterService {
     if (await PingConnectionServiceImpl().isConnected || !online) {
       try {
         return Right(await code());
+      } on ServerException catch (e) {
+        log(e.toString(), stackTrace: e.stackTrace);
+
+        return Left(
+          Failure(
+            message: e.message ?? errorIdentification ?? '',
+            stackTrace: e.stackTrace,
+          ),
+        );
+      } on Exception catch (e) {
+        log(e.toString(), stackTrace: StackTrace.current);
+
+        return Left(
+          Failure(
+            message: e.toString(),
+          ),
+        );
       } on Failure catch (e) {
         log(e.toString(), stackTrace: e.stackTrace);
+
         return Left(e);
       } catch (e) {
         if (e is TypeError) {
@@ -26,20 +44,18 @@ class TreaterService {
         if (e is ServerException) {
           return Left(
             ServerFailure(
-              title: '$errorIdentification',
-              description: e.message,
+              message: e.message ?? '',
             ),
           );
         }
         return Left(
           Failure(
-            title: '$errorIdentification',
-            description: e.toString(),
+            message: e.toString(),
           ),
         );
       }
     } else {
-      return const Left(Failure(title: 'Sem conexão com a internet'));
+      return const Left(Failure(message: 'Sem conexão com a internet'));
     }
   }
 }

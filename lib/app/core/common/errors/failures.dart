@@ -2,21 +2,20 @@ import 'package:equatable/equatable.dart';
 
 //Modelo padrão para erros futuros
 class Failure extends Equatable {
-  final String title;
-  final String? description;
+  final String message;
   final StackTrace? stackTrace;
 
   @override
-  List<Object?> get props => [title, description, stackTrace];
+  List<Object?> get props => [message, stackTrace];
 
-  const Failure({required this.title, this.description, this.stackTrace});
+  const Failure({required this.message, this.stackTrace});
 }
 
 //General Failures
 class ServerFailure extends Failure {
-  const ServerFailure({required super.title, super.description, super.stackTrace});
+  const ServerFailure({required super.message, super.stackTrace});
 }
 
 class DatabaseFailure extends Failure {
-  const DatabaseFailure({required super.title, super.description, super.stackTrace});
+  const DatabaseFailure({required super.message, super.stackTrace});
 }

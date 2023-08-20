@@ -5,7 +5,7 @@ import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart'
 import 'package:tictactoe/app/core/shared/room/domain/usecases/close_room.dart';
 import 'package:tictactoe/app/core/shared/room/domain/usecases/get_room_stream.dart';
 
-class NewRoomService {
+class GameService {
   late StreamSubscription roomSubscription;
   Stream<RoomEntity>? roomStream;
 

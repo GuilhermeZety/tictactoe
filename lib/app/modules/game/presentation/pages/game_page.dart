@@ -20,6 +20,7 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   GameCubit cubit = GameCubit();
+
   @override
   void initState() {
     cubit.init(widget.roomID);

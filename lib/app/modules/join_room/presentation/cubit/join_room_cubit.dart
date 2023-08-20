@@ -4,26 +4,30 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:tictactoe/main.dart';
+import 'package:tictactoe/app/core/common/errors/failures.dart';
+import 'package:tictactoe/app/modules/join_room/presentation/join_room_service.dart';
 part 'join_room_state.dart';
 
 class JoinRoomCubit extends Cubit<JoinRoomState> {
   JoinRoomCubit() : super(JoinRoomInitial());
+  JoinRoomService service = JoinRoomService();
 
   QRViewController? controller;
   TextEditingController roomController = TextEditingController();
 
   void joinRoom(int id) async {
     emit(JoinRoomLoading());
-    var room = await session.database.ref().child('rooms').child(id.toString()).get();
 
-    if (room.value != null) {
-      await session.database.ref().child('rooms').child(id.toString()).update({'opponentUuid': session.userUuid});
-      emit(JoinRoomJoin(roomId: id));
-    } else {
-      emit(const JoinRoomError(message: 'Sala não encontrada'));
+    try {
+      var roomId = await service.joinRoom(id);
+      emit(JoinRoomJoin(roomId: roomId));
+    } on Failure catch (err) {
+      emit(JoinRoomError(message: err.message));
       controller?.resumeCamera();
-      emit(JoinRoomInitial());
+      //
+    } catch (err) {
+      emit(JoinRoomError(message: err.toString()));
+      controller?.resumeCamera();
     }
   }
 

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,7 +11,6 @@ part 'new_room_state.dart';
 
 class NewRoomCubit extends Cubit<NewRoomState> {
   NewRoomCubit() : super(NewRoomInitial());
-
   NewRoomService service = NewRoomService();
 
   RoomEntity? room;
@@ -27,7 +25,6 @@ class NewRoomCubit extends Cubit<NewRoomState> {
 
     service.listenReturn((_) {
       room = _;
-      log(room?.hostUuid ?? '');
       emit(NewRoomUpdated());
       if (room?.opponentUuid != null) {
         emit(NewRoomJoin(roomId: room!.id));

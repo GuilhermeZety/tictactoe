@@ -1,25 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tictactoe/app/core/shared/room/data/models/room_model.dart';
-import 'package:tictactoe/main.dart';
+import 'package:tictactoe/app/core/common/errors/failures.dart';
+import 'package:tictactoe/app/modules/home/presentation/home_service.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
 
+  HomeService service = HomeService();
+
   Future createRoom() async {
-    int id = 1000;
-    var allrooms = await session.database.ref().child('rooms').get();
+    try {
+      var roomId = await service.createRoom();
 
-    if (allrooms.children.isNotEmpty) {
-      id = int.parse(allrooms.children.last.key ?? '0') + 1;
+      if (state is HomeNewRoom) emit(HomeInitial());
+      emit(HomeNewRoom(roomId));
+      //
+    } on Failure catch (err) {
+      emit(HomeError(message: err.message));
+    } catch (e) {
+      emit(HomeError(message: e.toString()));
     }
-    RoomModel newRoom = RoomModel(id: id, hostUuid: session.userUuid!);
-
-    await session.database.ref().child('rooms').child(newRoom.id.toString()).set(newRoom.toMap());
-
-    if (state is HomeNewRoom) emit(HomeInitial());
-    emit(HomeNewRoom(newRoom.id));
   }
 }

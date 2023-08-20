@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tictactoe/app/core/common/constants/app_routes.dart';
 import 'package:tictactoe/app/core/common/services/connection/ping_connection_service_impl.dart';
+import 'package:tictactoe/app/core/common/services/firebase/firebase_service.dart';
 import 'package:tictactoe/app/core/common/services/requests/dio_request_service.dart';
 import 'package:tictactoe/app/core/common/services/requests/request_service.dart';
 import 'package:tictactoe/app/core/common/utils/toasting.dart';
@@ -19,8 +20,9 @@ import 'package:tictactoe/app/core/common/services/connection/connection_service
 
 class AppModule extends Module {
   @override
-  void binds(Injector i) {
+  void binds(Injector i) async {
     RoomLogic.binds(i);
+    FirebaseService.binds(i);
     i.addSingleton<ConnectionService>(() => PingConnectionServiceImpl());
     i.addSingleton<RequestService>(() => DioRequestService());
   }

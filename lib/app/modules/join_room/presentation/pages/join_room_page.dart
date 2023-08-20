@@ -72,28 +72,25 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
               }
             },
             builder: (context, state) {
-              if (state is JoinRoomLoading) {
+              if (state is JoinRoomLoading || state is JoinRoomJoin) {
                 return Padding(
                   padding: const EdgeInsets.all(20),
-                  child: const Panel(
-                    child: SizedBox(
-                      height: 500,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Acessando sala...',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.white),
-                          ),
-                          Gap(20),
-                          Loader(
-                            size: 50,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ).hero('panel'),
+                  child: Center(
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Acessando sala...',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.white),
+                        ),
+                        Gap(20),
+                        Loader(
+                          size: 50,
+                        ),
+                      ],
+                    ).hero('panel'),
+                  ),
                 );
               }
               return Padding(
