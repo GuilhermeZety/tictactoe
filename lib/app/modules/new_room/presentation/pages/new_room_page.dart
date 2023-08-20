@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
+import 'package:tictactoe/app/core/common/constants/app_routes.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/cubit/new_room_cubit.dart';
 import 'package:tictactoe/app/ui/components/custom_app_bar.dart';
@@ -53,6 +54,9 @@ class _NewRoomPageState extends State<NewRoomPage> {
               if (state is NewRoomExit) {
                 Modular.to.pop();
               }
+              if (state is NewRoomJoin) {
+                Modular.to.pushNamedAndRemoveUntil(AppRoutes.game, (_) => false, arguments: state.roomId);
+              }
             },
             builder: (context, state) {
               return Container(
@@ -71,11 +75,11 @@ class _NewRoomPageState extends State<NewRoomPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Text(
-                            'Acessar Sala',
+                            'Nova Sala',
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.white),
                           ),
                           const Text(
-                            'Leia o QRCode do seu adversário ou insira o código',
+                            'Peça para seu adversario ler o QRCode ou inserir o código.',
                             style: TextStyle(color: AppColors.grey_200),
                           ),
                           QrCode(data: widget.roomID.toString()),

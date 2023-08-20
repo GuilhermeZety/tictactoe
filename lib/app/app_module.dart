@@ -6,6 +6,7 @@ import 'package:tictactoe/app/core/common/services/connection/ping_connection_se
 import 'package:tictactoe/app/core/common/services/requests/dio_request_service.dart';
 import 'package:tictactoe/app/core/common/services/requests/request_service.dart';
 import 'package:tictactoe/app/core/common/utils/toasting.dart';
+import 'package:tictactoe/app/modules/game/presentation/pages/game_page.dart';
 import 'package:tictactoe/app/modules/home/presentation/pages/home_page.dart';
 import 'package:tictactoe/app/modules/join_room/presentation/pages/join_room_page.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/pages/new_room_page.dart';
@@ -49,6 +50,21 @@ class AppModule extends Module {
           );
         }
         Toasting.error(args, message: 'Erro ao criar sala');
+        Modular.to.navigate(AppRoutes.splash);
+        return const SizedBox.shrink();
+      },
+      transition: TransitionType.fadeIn,
+      duration: 300.ms,
+    );
+    r.child(
+      '/game/',
+      child: (args) {
+        if (r.args.data is int) {
+          return GamePage(
+            roomID: r.args.data,
+          );
+        }
+        Toasting.error(args, message: 'Erro ao entrar na sala');
         Modular.to.navigate(AppRoutes.splash);
         return const SizedBox.shrink();
       },

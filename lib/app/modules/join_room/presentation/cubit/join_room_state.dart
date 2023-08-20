@@ -9,7 +9,7 @@ sealed class JoinRoomState extends Equatable {
 
 final class JoinRoomInitial extends JoinRoomState {}
 
-final class JoinRoomUpdated extends JoinRoomState {}
+final class JoinRoomLoading extends JoinRoomState {}
 
 final class JoinRoomExit extends JoinRoomState {}
 

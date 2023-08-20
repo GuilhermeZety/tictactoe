@@ -8,5 +8,13 @@ sealed class NewRoomState extends Equatable {
 }
 
 final class NewRoomInitial extends NewRoomState {}
+
 final class NewRoomUpdated extends NewRoomState {}
+
 final class NewRoomExit extends NewRoomState {}
+
+final class NewRoomJoin extends NewRoomState {
+  final int roomId;
+
+  const NewRoomJoin({required this.roomId});
+}

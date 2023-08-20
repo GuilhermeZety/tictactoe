@@ -7,10 +7,10 @@ import 'package:tictactoe/app/core/shared/room/data/models/room_model.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/components/exit_room_modal.dart';
 import 'package:tictactoe/main.dart';
 
-part 'new_room_state.dart';
+part 'game_state.dart';
 
-class NewRoomCubit extends Cubit<NewRoomState> {
-  NewRoomCubit() : super(NewRoomInitial());
+class GameCubit extends Cubit<GameState> {
+  GameCubit() : super(GameInitial());
 
   RoomModel? room;
   late StreamSubscription roomSubscription;
@@ -19,12 +19,8 @@ class NewRoomCubit extends Cubit<NewRoomState> {
     roomSubscription = session.database.ref().child('rooms').child(roomId.toString()).onValue.listen((event) {
       if (event.snapshot.value != null) {
         room = RoomModel.fromMap(Map<String, dynamic>.from(event.snapshot.value as Map));
-        emit(NewRoomUpdated());
-        if (room?.opponentUuid != null) {
-          emit(NewRoomJoin(roomId: room!.id));
-          return;
-        }
-        emit(NewRoomInitial());
+        emit(GameUpdated());
+        emit(GameInitial());
       }
     });
   }
@@ -34,7 +30,7 @@ class NewRoomCubit extends Cubit<NewRoomState> {
 
     if (sure == true) {
       await session.database.ref().child('rooms').child(room!.id.toString()).remove();
-      emit(NewRoomExit());
+      emit(GameExit());
     }
   }
 
