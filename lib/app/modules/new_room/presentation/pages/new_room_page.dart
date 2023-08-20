@@ -25,7 +25,6 @@ class NewRoomPage extends StatefulWidget {
 
 class _NewRoomPageState extends State<NewRoomPage> {
   NewRoomCubit cubit = NewRoomCubit();
-
   @override
   void initState() {
     cubit.init(widget.roomID);
@@ -72,17 +71,16 @@ class _NewRoomPageState extends State<NewRoomPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Text(
-                            'Nova Sala',
+                            'Acessar Sala',
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.white),
                           ),
                           const Text(
-                            'Peça para seu adversario ler o QRCode ou inserir o código.',
+                            'Leia o QRCode do seu adversário ou insira o código',
                             style: TextStyle(color: AppColors.grey_200),
                           ),
                           QrCode(data: widget.roomID.toString()),
                           Input(
                             TextEditingController(text: widget.roomID.toString()),
-                            label: 'Código da sala:',
                             copy: true,
                             readOnly: true,
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
@@ -61,7 +62,9 @@ class _HomePageState extends State<HomePage> {
                           ).expandedH(),
                           const Gap(20),
                           Button.secondary(
-                            onPressed: () async {},
+                            onPressed: () async {
+                              Modular.to.pushNamed(AppRoutes.joinRoom);
+                            },
                             child: const Text('Entrar em uma sala'),
                           ).expandedH(),
                         ],
