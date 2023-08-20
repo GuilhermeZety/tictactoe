@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
@@ -30,12 +31,12 @@ class _NotConnectionPageState extends State<NotConnectionPage> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: context.heightPx * 0.2),
-              child: Image.asset(
+              child: SvgPicture.asset(
                 AppAssets.logo,
-                width: 200,
-                height: 200,
+                width: 120,
               ).hero('logo'),
             ),
+            const Gap(50),
             const Text(
               'Ops!',
               style: TextStyle(

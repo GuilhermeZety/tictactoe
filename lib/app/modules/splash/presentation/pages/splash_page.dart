@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
-import 'package:tictactoe/app/core/common/constants/app_routes.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
-import 'package:tictactoe/app/core/common/services/connection/connection_service.dart';
+import 'package:tictactoe/app/modules/splash/splash_service.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -16,17 +14,11 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  SplashService service = SplashService();
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (await Modular.get<ConnectionService>().isConnected) {
-        Future.delayed(4.seconds, () => Modular.to.navigate(AppRoutes.home));
-        return;
-      }
-      Future.delayed(4.seconds, () => Modular.to.navigate(AppRoutes.notConnection));
-      return;
-    });
+    service.navigate();
   }
 
   @override

@@ -9,6 +9,7 @@ import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
 import 'package:tictactoe/app/core/common/constants/app_routes.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
+import 'package:tictactoe/app/core/common/utils/toasting.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/cubit/new_room_cubit.dart';
 import 'package:tictactoe/app/ui/components/custom_app_bar.dart';
 import 'package:tictactoe/app/ui/components/input.dart';
@@ -51,6 +52,9 @@ class _NewRoomPageState extends State<NewRoomPage> {
           child: BlocConsumer<NewRoomCubit, NewRoomState>(
             bloc: cubit,
             listener: (context, state) {
+              if (state is NewRoomError) {
+                Toasting.error(context, message: state.message);
+              }
               if (state is NewRoomExit) {
                 Modular.to.pop();
               }

@@ -21,6 +21,7 @@ class JoinRoomCubit extends Cubit<JoinRoomState> {
       await session.database.ref().child('rooms').child(id.toString()).update({'opponentUuid': session.userUuid});
       emit(JoinRoomJoin(roomId: id));
     } else {
+      emit(const JoinRoomError(message: 'Sala não encontrada'));
       controller?.resumeCamera();
       emit(JoinRoomInitial());
     }

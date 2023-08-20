@@ -13,6 +13,12 @@ final class NewRoomUpdated extends NewRoomState {}
 
 final class NewRoomExit extends NewRoomState {}
 
+final class NewRoomError extends NewRoomState {
+  final String message;
+
+  const NewRoomError({required this.message});
+}
+
 final class NewRoomJoin extends NewRoomState {
   final int roomId;
 

@@ -1,31 +1,39 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:tictactoe/app/core/shared/room/data/models/room_model.dart';
+import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/components/exit_room_modal.dart';
-import 'package:tictactoe/main.dart';
+import 'package:tictactoe/app/modules/new_room/presentation/new_room_service.dart';
 
 part 'new_room_state.dart';
 
 class NewRoomCubit extends Cubit<NewRoomState> {
   NewRoomCubit() : super(NewRoomInitial());
 
-  RoomModel? room;
-  late StreamSubscription roomSubscription;
+  NewRoomService service = NewRoomService();
+
+  RoomEntity? room;
 
   Future init(int roomId) async {
-    roomSubscription = session.database.ref().child('rooms').child(roomId.toString()).onValue.listen((event) {
-      if (event.snapshot.value != null) {
-        room = RoomModel.fromMap(Map<String, dynamic>.from(event.snapshot.value as Map));
-        emit(NewRoomUpdated());
-        if (room?.opponentUuid != null) {
-          emit(NewRoomJoin(roomId: room!.id));
-          return;
-        }
-        emit(NewRoomInitial());
+    await service.getRoom(roomId);
+
+    if (service.roomStream == null) {
+      emit(const NewRoomError(message: 'Sala não encontrada'));
+      return;
+    }
+
+    service.listenReturn((_) {
+      room = _;
+      log(room?.hostUuid ?? '');
+      emit(NewRoomUpdated());
+      if (room?.opponentUuid != null) {
+        emit(NewRoomJoin(roomId: room!.id));
+        return;
       }
+      emit(NewRoomInitial());
     });
   }
 
@@ -33,13 +41,13 @@ class NewRoomCubit extends Cubit<NewRoomState> {
     var sure = await ExitRoomModal.show(context);
 
     if (sure == true) {
-      await session.database.ref().child('rooms').child(room!.id.toString()).remove();
+      await service.exit(room!.id);
       emit(NewRoomExit());
     }
   }
 
   void dispose() {
-    roomSubscription.cancel();
+    service.dispose();
     super.close();
   }
 }

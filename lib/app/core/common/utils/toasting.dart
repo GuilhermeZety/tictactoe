@@ -20,8 +20,8 @@ class Toasting {
       color: AppColors.red_400,
       message: message ?? 'Erro',
       icon: const Icon(
-        Icons.error,
-        color: AppColors.white,
+        Icons.error_outline,
+        color: AppColors.red_400,
       ),
       duration: duration,
     );

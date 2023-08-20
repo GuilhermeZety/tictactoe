@@ -12,6 +12,7 @@ import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
 import 'package:tictactoe/app/core/common/constants/app_routes.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
+import 'package:tictactoe/app/core/common/utils/toasting.dart';
 import 'package:tictactoe/app/modules/join_room/presentation/cubit/join_room_cubit.dart';
 import 'package:tictactoe/app/ui/components/button.dart';
 import 'package:tictactoe/app/ui/components/custom_app_bar.dart';
@@ -60,6 +61,9 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
           child: BlocConsumer<JoinRoomCubit, JoinRoomState>(
             bloc: cubit,
             listener: (context, state) {
+              if (state is JoinRoomError) {
+                Toasting.error(context, message: state.message);
+              }
               if (state is JoinRoomExit) {
                 Modular.to.pop();
               }
@@ -139,7 +143,15 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                               cubit.roomController,
                               label: 'Código da sala:',
                             ),
-                            Button.secondary(onPressed: () async {}, child: const Text('Entrar')).expandedH(),
+                            Button.secondary(
+                              onPressed: () async {
+                                var code = int.tryParse(cubit.roomController.text);
+                                if (code != null) {
+                                  cubit.joinRoom(code);
+                                }
+                              },
+                              child: const Text('Entrar'),
+                            ).expandedH(),
                           ],
                         ),
                       ).hero('panel'),

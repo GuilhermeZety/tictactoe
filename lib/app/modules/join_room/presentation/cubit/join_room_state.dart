@@ -13,6 +13,12 @@ final class JoinRoomLoading extends JoinRoomState {}
 
 final class JoinRoomExit extends JoinRoomState {}
 
+final class JoinRoomError extends JoinRoomState {
+  final String message;
+
+  const JoinRoomError({required this.message});
+}
+
 final class JoinRoomJoin extends JoinRoomState {
   final int roomId;
 

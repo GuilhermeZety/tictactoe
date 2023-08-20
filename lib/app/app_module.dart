@@ -6,6 +6,7 @@ import 'package:tictactoe/app/core/common/services/connection/ping_connection_se
 import 'package:tictactoe/app/core/common/services/requests/dio_request_service.dart';
 import 'package:tictactoe/app/core/common/services/requests/request_service.dart';
 import 'package:tictactoe/app/core/common/utils/toasting.dart';
+import 'package:tictactoe/app/core/shared/room/room_logic.dart';
 import 'package:tictactoe/app/modules/game/presentation/pages/game_page.dart';
 import 'package:tictactoe/app/modules/home/presentation/pages/home_page.dart';
 import 'package:tictactoe/app/modules/join_room/presentation/pages/join_room_page.dart';
@@ -19,6 +20,7 @@ import 'package:tictactoe/app/core/common/services/connection/connection_service
 class AppModule extends Module {
   @override
   void binds(Injector i) {
+    RoomLogic.binds(i);
     i.addSingleton<ConnectionService>(() => PingConnectionServiceImpl());
     i.addSingleton<RequestService>(() => DioRequestService());
   }
@@ -31,7 +33,7 @@ class AppModule extends Module {
       transition: TransitionType.fadeIn,
     );
     r.child(
-      '/not_connection',
+      '/not_connection/',
       child: (args) => const NotConnectionPage(),
       transition: TransitionType.fadeIn,
     );
