@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:tictactoe/app/core/common/enums/player_type.dart';
 import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart';
 import 'package:tictactoe/app/modules/game/presentation/game_service.dart';
+import 'package:tictactoe/app/modules/new_room/presentation/components/exit_room_modal.dart';
 import 'package:tictactoe/main.dart';
 
 part 'game_state.dart';
@@ -28,19 +29,31 @@ class GameCubit extends Cubit<GameState> {
 
     service.listenReturn((_) {
       room = _;
+      for (var winPossibility in service.winPossibilities) {
+        if (room?.board[winPossibility[0]] != 0 && room?.board[winPossibility[0]] == room?.board[winPossibility[1]] && room?.board[winPossibility[1]] == room?.board[winPossibility[2]]) {
+          emit(GameWin(playerType: room?.board[winPossibility[0]] == 1 ? PlayerType.host : PlayerType.opponent));
+        }
+      }
       if (state is GameInitial) emit(GameUpdated());
       emit(GameInitial());
     });
   }
 
-  // void exitRoom(BuildContext context) async {
-  //   var sure = await ExitRoomModal.show(context);
+  Future<void> select(int index) async {
+    if (room?.turn != playerType) return;
+    if (room?.board[index] != 0) return;
 
-  //   if (sure == true) {
-  //     await service.exit(room!.id);
-  //     emit(GameExit());
-  //   }
-  // }
+    await service.select(room!, index, playerType);
+  }
+
+  void exitRoom(BuildContext context) async {
+    var sure = await ExitRoomModal.show(context);
+
+    if (sure == true) {
+      await service.exit(room!.id);
+      emit(GameExit());
+    }
+  }
 
   void dispose() {
     service.dispose();

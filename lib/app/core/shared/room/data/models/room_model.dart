@@ -12,6 +12,7 @@ class RoomModel extends RoomEntity {
     super.opponentUuid,
     super.board,
     super.victories = const (0, 0),
+    super.replay = const (false, false),
   });
 
   RoomModel copyWith({
@@ -21,6 +22,7 @@ class RoomModel extends RoomEntity {
     PlayerType? turn,
     List<int>? board,
     (int host, int opponent)? victories,
+    (bool host, bool opponent)? replay,
   }) {
     return RoomModel(
       id: id ?? this.id,
@@ -29,6 +31,7 @@ class RoomModel extends RoomEntity {
       turn: turn ?? this.turn,
       board: board ?? this.board,
       victories: victories ?? this.victories,
+      replay: replay ?? this.replay,
     );
   }
 
@@ -40,6 +43,7 @@ class RoomModel extends RoomEntity {
       'turn': turn.name,
       'board': board,
       'victories': [victories.$1, victories.$2],
+      'replay': [victories.$1, victories.$2],
     };
   }
 
@@ -56,6 +60,12 @@ class RoomModel extends RoomEntity {
               (map['victories'] as List).last,
             )
           : (0, 0),
+      replay: map['replay'] != null
+          ? (
+              (map['replay'] as List).first,
+              (map['replay'] as List).last,
+            )
+          : (false, false),
     );
   }
 

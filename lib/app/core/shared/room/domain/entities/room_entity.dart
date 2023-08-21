@@ -9,6 +9,7 @@ abstract class RoomEntity extends Equatable {
   PlayerType turn;
   List<int> board;
   (int host, int opponent) victories;
+  (bool host, bool opponent) replay;
 
   RoomEntity({
     required this.id,
@@ -17,11 +18,20 @@ abstract class RoomEntity extends Equatable {
     this.board = const [0, 0, 0, 0, 0, 0, 0, 0, 0],
     this.opponentUuid,
     this.victories = const (0, 0),
+    this.replay = const (false, false),
   });
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, hostUuid, opponentUuid];
+  List<Object?> get props => [
+        id,
+        hostUuid,
+        opponentUuid,
+        replay,
+        victories,
+        turn,
+        board,
+      ];
 }

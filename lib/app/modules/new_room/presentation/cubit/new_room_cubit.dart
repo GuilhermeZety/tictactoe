@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:tictactoe/app/core/common/extensions/entities_extension.dart';
-import 'package:tictactoe/app/core/shared/room/data/models/room_model.dart';
 import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/components/exit_room_modal.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/new_room_service.dart';

@@ -20,7 +20,7 @@ import 'package:tictactoe/app/core/common/services/connection/connection_service
 
 class AppModule extends Module {
   @override
-  void binds(Injector i) async {
+  void binds(Injector i) {
     FirebaseService.binds(i);
     RoomLogic.binds(i);
     i.addSingleton<ConnectionService>(() => PingConnectionServiceImpl());

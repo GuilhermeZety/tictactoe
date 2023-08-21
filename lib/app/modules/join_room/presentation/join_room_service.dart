@@ -9,10 +9,12 @@ class JoinRoomService {
     var response = await Modular.get<GetRoom>()(GetRoomParams(roomId: roomId));
 
     return await response.fold((l) => throw l, (room) async {
-      if (room.opponentUuid != null && room.opponentUuid != session.userUuid) {
+      if (room.opponentUuid != null && room.opponentUuid != session.userUuid && room.hostUuid != session.userUuid) {
         throw const Failure(message: 'A sala já está cheia!');
       }
-      room.opponentUuid = session.userUuid;
+      if (room.hostUuid != session.userUuid) {
+        room.opponentUuid = session.userUuid;
+      }
 
       var update = await Modular.get<UpdateRoom>()(UpdateRoomParams(room: room));
 

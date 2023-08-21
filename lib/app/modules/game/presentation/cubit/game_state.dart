@@ -15,6 +15,12 @@ final class GameUpdated extends GameState {}
 
 final class GameExit extends GameState {}
 
+final class GameWin extends GameState {
+  final PlayerType playerType;
+
+  const GameWin({required this.playerType});
+}
+
 final class GameError extends GameState {
   final String message;
 
