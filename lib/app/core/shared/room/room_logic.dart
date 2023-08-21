@@ -10,7 +10,7 @@ import 'package:tictactoe/app/core/shared/room/domain/usecases/update_room.dart'
 
 class RoomLogic {
   static void binds(Injector i) {
-    i.addSingleton<RoomRepository>(
+    i.add<RoomRepository>(
       () => RoomRepositoryImpl(
         datasource: RoomDatasourceImpl(
           database: i.get(),

@@ -5,7 +5,7 @@ import 'package:tictactoe/main.dart';
 
 class FirebaseService {
   static void binds(Injector i) {
-    i.addSingleton<FirebaseApp>(() => firebaseApp);
+    i.addSingleton<FirebaseApp>(() => session.firebaseApp);
     i.addSingleton<FirebaseDatabase>(() => FirebaseDatabase.instanceFor(app: i.get()));
   }
 }
