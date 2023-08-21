@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
             bloc: cubit,
             listener: (context, state) {
               if (state is HomeNewRoom) {
-                log('3');
                 Navigator.of(context).pushNamed(AppRoutes.newRoom, arguments: state.roomId);
               }
             },

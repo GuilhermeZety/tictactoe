@@ -62,7 +62,6 @@ class _NewRoomPageState extends State<NewRoomPage> {
                 Modular.to.pop();
               }
               if (state is NewRoomJoin) {
-                log('1');
                 Modular.to.pushNamedAndRemoveUntil(AppRoutes.game, (_) => false, arguments: state.roomId);
               }
             },

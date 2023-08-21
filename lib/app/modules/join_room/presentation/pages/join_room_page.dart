@@ -69,7 +69,6 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                 Modular.to.pop();
               }
               if (state is JoinRoomJoin) {
-                log('2');
                 Modular.to.pushNamedAndRemoveUntil(AppRoutes.game, (_) => false, arguments: state.roomId);
               }
             },

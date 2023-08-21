@@ -28,7 +28,6 @@ class NewRoomCubit extends Cubit<NewRoomState> {
 
     service.listenReturn((_) {
       room = _;
-      log(_?.as<RoomModel>().toJson() ?? '');
       emit(NewRoomUpdated());
       if (room?.opponentUuid != null) {
         emit(NewRoomJoin(roomId: room!.id));
