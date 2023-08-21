@@ -7,7 +7,7 @@ import 'package:tictactoe/app/core/shared/room/domain/usecases/get_room_stream.d
 
 class GameService {
   late StreamSubscription roomSubscription;
-  Stream<RoomEntity>? roomStream;
+  Stream<RoomEntity?>? roomStream;
 
   Future<void> getRoom(int roomId) async {
     final response = await Modular.get<GetRoomStream>()(GetRoomStreamParams(roomId: roomId));
@@ -19,7 +19,7 @@ class GameService {
     roomStream = response.fold((l) => const Stream.empty(), (r) => r);
   }
 
-  void listenReturn(Function(RoomEntity) event) {
+  void listenReturn(Function(RoomEntity?) event) {
     if (roomStream == null) return;
     roomSubscription = roomStream!.listen(event);
   }

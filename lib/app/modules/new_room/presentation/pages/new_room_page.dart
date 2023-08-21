@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +62,7 @@ class _NewRoomPageState extends State<NewRoomPage> {
                 Modular.to.pop();
               }
               if (state is NewRoomJoin) {
+                log('1');
                 Modular.to.pushNamedAndRemoveUntil(AppRoutes.game, (_) => false, arguments: state.roomId);
               }
             },

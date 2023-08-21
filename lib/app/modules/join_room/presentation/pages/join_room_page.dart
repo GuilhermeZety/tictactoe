@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
@@ -68,15 +69,16 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                 Modular.to.pop();
               }
               if (state is JoinRoomJoin) {
+                log('2');
                 Modular.to.pushNamedAndRemoveUntil(AppRoutes.game, (_) => false, arguments: state.roomId);
               }
             },
             builder: (context, state) {
               if (state is JoinRoomLoading || state is JoinRoomJoin) {
-                return Padding(
-                  padding: const EdgeInsets.all(20),
+                return const Padding(
+                  padding: EdgeInsets.all(20),
                   child: Center(
-                    child: const Column(
+                    child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -89,7 +91,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                           size: 50,
                         ),
                       ],
-                    ).hero('panel'),
+                    ),
                   ),
                 );
               }

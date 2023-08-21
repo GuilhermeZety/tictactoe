@@ -25,8 +25,8 @@ class RoomRepositoryImpl extends RoomRepository {
   }
 
   @override
-  Future<Either<Failure, Stream<RoomEntity>>> getRoomStream(int roomId) {
-    return TreaterService()<Stream<RoomEntity>>(
+  Future<Either<Failure, Stream<RoomEntity?>>> getRoomStream(int roomId) {
+    return TreaterService()<Stream<RoomEntity?>>(
       () async {
         return await datasource.getRoomStream(roomId);
       },

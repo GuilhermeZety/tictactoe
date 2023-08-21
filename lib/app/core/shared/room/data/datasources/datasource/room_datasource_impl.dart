@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:firebase_database/firebase_database.dart';
+import 'package:tictactoe/app/core/common/enums/player_type.dart';
 import 'package:tictactoe/app/core/common/errors/exceptions.dart';
 import 'package:tictactoe/app/core/common/extensions/entities_extension.dart';
 
@@ -30,7 +33,7 @@ class RoomDatasourceImpl extends RoomDatasource {
   }
 
   @override
-  Future<Stream<RoomModel>> getRoomStream(int roomId) async {
+  Future<Stream<RoomModel?>> getRoomStream(int roomId) async {
     var stream = database
         .ref()
         .child('rooms')
@@ -39,11 +42,14 @@ class RoomDatasourceImpl extends RoomDatasource {
         )
         .onValue;
 
-    return stream.map<RoomModel>(
-      (event) => RoomModel.fromMap(
+    return stream.map<RoomModel?>((event) {
+      if (event.snapshot.value == null) {
+        return null;
+      }
+      return RoomModel.fromMap(
         Map<String, dynamic>.from(event.snapshot.value as Map),
-      ),
-    );
+      );
+    });
   }
 
   @override
@@ -54,7 +60,7 @@ class RoomDatasourceImpl extends RoomDatasource {
     if (allrooms.children.isNotEmpty) {
       id = int.parse(allrooms.children.last.key ?? '0') + 1;
     }
-    RoomModel newRoom = RoomModel(id: id, hostUuid: session.userUuid!);
+    RoomModel newRoom = RoomModel(id: id, hostUuid: session.userUuid!, turn: Random().nextBool() ? PlayerType.host : PlayerType.opponent);
 
     await database.ref().child('rooms').child(newRoom.id.toString()).set(newRoom.toMap());
 

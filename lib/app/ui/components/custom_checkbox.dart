@@ -14,7 +14,7 @@ class CustomCheckbox extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: value != null ? (value! ? AppColors.purple_400 : AppColors.pink_400) : AppColors.grey_300,
-        borderRadius: BorderRadius.circular(size * 0.35),
+        borderRadius: BorderRadius.circular(size * 0.25),
       ),
       child: Center(
         child: value != null

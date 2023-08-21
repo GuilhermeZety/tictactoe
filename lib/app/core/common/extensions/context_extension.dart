@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tictactoe/app/core/common/enums/layout_types.dart';
+import 'package:tictactoe/app/core/common/enums/layout_type.dart';
 
 extension GetTheme on BuildContext {
   Size get _size => MediaQuery.sizeOf(this);

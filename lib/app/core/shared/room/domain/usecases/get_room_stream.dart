@@ -5,7 +5,7 @@ import 'package:tictactoe/app/core/common/features/usecases/usecase.dart';
 import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart';
 import 'package:tictactoe/app/core/shared/room/domain/repositories/room_repository.dart';
 
-class GetRoomStream extends StreamUsecase<RoomEntity, GetRoomStreamParams> {
+class GetRoomStream extends Usecase<Stream<RoomEntity?>, GetRoomStreamParams> {
   final RoomRepository repository;
 
   GetRoomStream({
@@ -13,7 +13,7 @@ class GetRoomStream extends StreamUsecase<RoomEntity, GetRoomStreamParams> {
   });
 
   @override
-  Future<Either<Failure, Stream<RoomEntity>>> call(
+  Future<Either<Failure, Stream<RoomEntity?>>> call(
     GetRoomStreamParams params,
   ) async {
     return await repository.getRoomStream(params.roomId);

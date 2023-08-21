@@ -9,6 +9,8 @@ sealed class GameState extends Equatable {
 
 final class GameInitial extends GameState {}
 
+final class GameLoading extends GameState {}
+
 final class GameUpdated extends GameState {}
 
 final class GameExit extends GameState {}

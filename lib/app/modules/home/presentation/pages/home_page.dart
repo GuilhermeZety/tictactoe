@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,6 +34,7 @@ class _HomePageState extends State<HomePage> {
             bloc: cubit,
             listener: (context, state) {
               if (state is HomeNewRoom) {
+                log('3');
                 Navigator.of(context).pushNamed(AppRoutes.newRoom, arguments: state.roomId);
               }
             },
