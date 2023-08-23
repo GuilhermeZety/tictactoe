@@ -13,7 +13,6 @@ void main() async {
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-
   await session.init();
 
   runApp(

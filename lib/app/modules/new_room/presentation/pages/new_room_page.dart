@@ -8,6 +8,7 @@ import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
 import 'package:tictactoe/app/core/common/constants/app_routes.dart';
+import 'package:tictactoe/app/core/common/extensions/context_extension.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
 import 'package:tictactoe/app/core/common/utils/toasting.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/cubit/new_room_cubit.dart';
@@ -87,7 +88,12 @@ class _NewRoomPageState extends State<NewRoomPage> {
                             'Peça para seu adversario ler o QRCode ou inserir o código.',
                             style: TextStyle(color: AppColors.grey_200),
                           ),
-                          QrCode(data: widget.roomID.toString()),
+                          SizedBox(
+                            width: (context.widthPx * .5) > 300 ? 300 : context.widthPx * .5,
+                            child: QrCode(
+                              data: widget.roomID.toString(),
+                            ),
+                          ),
                           Input(
                             TextEditingController(text: widget.roomID.toString()),
                             copy: true,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:tictactoe/app/core/common/enums/player_type.dart';
+import 'package:tictactoe/app/core/common/extensions/bool_extension.dart';
 import 'package:tictactoe/app/core/shared/room/domain/entities/room_entity.dart';
 
 // ignore: must_be_immutable
@@ -62,8 +63,8 @@ class RoomModel extends RoomEntity {
           : (0, 0),
       replay: map['replay'] != null
           ? (
-              (map['replay'] as List).first,
-              (map['replay'] as List).last,
+              ((map['replay'] as List).first as int?).toBool(),
+              ((map['replay'] as List).last as int?).toBool(),
             )
           : (false, false),
     );

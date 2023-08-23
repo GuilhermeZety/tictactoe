@@ -6,10 +6,10 @@ import 'package:tictactoe/app/core/common/services/connection/connection_service
 class SplashService {
   Future<void> navigate() async {
     if (await Modular.get<ConnectionService>().isConnected) {
-      Future.delayed(4.seconds, () => Modular.to.navigate(AppRoutes.home));
+      Future.delayed(3.seconds, () => Modular.to.navigate(AppRoutes.home));
       return;
     }
-    Future.delayed(4.seconds, () => Modular.to.navigate(AppRoutes.notConnection));
+    Future.delayed(1.seconds, () => Modular.to.navigate(AppRoutes.notConnection));
     return;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
 import 'package:tictactoe/app/core/common/constants/app_routes.dart';
+import 'package:tictactoe/app/core/common/extensions/context_extension.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
 import 'package:tictactoe/app/core/common/utils/toasting.dart';
 import 'package:tictactoe/app/modules/join_room/presentation/cubit/join_room_cubit.dart';
@@ -42,7 +44,9 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
   @override
   void reassemble() {
     super.reassemble();
-    if (cubit.controller != null) {
+    if (Platform.isAndroid) {
+      cubit.controller!.pauseCamera();
+    } else if (Platform.isIOS) {
       cubit.controller!.resumeCamera();
     }
   }
@@ -117,21 +121,26 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                               style: TextStyle(color: AppColors.grey_200),
                             ),
                             SizedBox(
-                              height: 300,
+                              height: (context.widthPx * .5) > 300 ? 300 : context.widthPx * .5,
+                              width: (context.widthPx * .5) > 300 ? 300 : context.widthPx * .5,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: QRView(
-                                  key: qrKey,
-                                  cameraFacing: CameraFacing.back,
-                                  formatsAllowed: const [BarcodeFormat.qrcode],
-                                  onQRViewCreated: cubit.onQRViewCreated,
-                                  overlay: QrScannerOverlayShape(
-                                    borderColor: AppColors.pink_400,
-                                    borderRadius: 10,
-                                    borderLength: 30,
-                                    borderWidth: 10,
-                                    cutOutSize: 200,
-                                  ),
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    return QRView(
+                                      key: qrKey,
+                                      cameraFacing: CameraFacing.back,
+                                      formatsAllowed: const [BarcodeFormat.qrcode],
+                                      onQRViewCreated: cubit.onQRViewCreated,
+                                      overlay: QrScannerOverlayShape(
+                                        borderColor: AppColors.pink_400,
+                                        borderRadius: 10,
+                                        borderLength: 30,
+                                        borderWidth: 10,
+                                        cutOutSize: constraints.maxHeight * 0.8,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),

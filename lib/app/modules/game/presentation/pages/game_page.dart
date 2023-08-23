@@ -82,108 +82,180 @@ class _GamePageState extends State<GamePage> {
                     ),
                   );
                 }
-                // if (state is GameWin) {
-                //   if (state.playerType == cubit.playerType) {
-                // // WIN
-                confettiController.play();
-                return Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: context.heightPx * 0.2),
-                        child: ConfettiWidget(
-                          confettiController: confettiController,
-                          blastDirectionality: BlastDirectionality.explosive,
-                          shouldLoop: false,
-                          gravity: 0.1,
-                          blastDirection: 0,
-                          maxBlastForce: 40,
-                          minBlastForce: 20,
-                          emissionFrequency: 0.1,
-                          numberOfParticles: 20,
-                        ),
-                      ),
-                    ),
-                    //BLUR LAYER
-                    Positioned.fill(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                        child: Container(
-                          color: Colors.black.withOpacity(0.1),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            'VOCE GANHOU!!!',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.green_400,
+                if (state is GameWin) {
+                  if (state.playerType == cubit.playerType) {
+                    // // WIN
+                    confettiController.play();
+                    return Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: context.heightPx * 0.2),
+                            child: ConfettiWidget(
+                              confettiController: confettiController,
+                              blastDirectionality: BlastDirectionality.explosive,
+                              shouldLoop: false,
+                              gravity: 0.1,
+                              blastDirection: 0,
+                              maxBlastForce: 40,
+                              minBlastForce: 20,
+                              emissionFrequency: 0.1,
+                              numberOfParticles: 20,
                             ),
                           ),
-                          const Gap(50),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: Panel(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _scoreboard,
-                                  const Gap(30),
-                                  const Text('Clique para jogarem uma nova partida:'),
-                                  const Gap(10),
-                                  Button(
-                                    onPressed: () async {},
-                                    child: Row(
-                                      children: [
-                                        const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.grey_200,
-                                            strokeWidth: 3,
-                                          ),
+                        ),
+                        //BLUR LAYER
+                        Positioned.fill(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                            child: Container(
+                              color: Colors.black.withOpacity(0.1),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'VOCE GANHOU!!!',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.green_400,
+                                ),
+                              ),
+                              const Gap(50),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                child: Panel(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      _scoreboard,
+                                      const Gap(30),
+                                      const Text('Clique para jogarem uma nova partida:'),
+                                      const Gap(10),
+                                      Button(
+                                        onPressed: () async {},
+                                        child: Row(
+                                          children: [
+                                            const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.grey_200,
+                                                strokeWidth: 3,
+                                              ),
+                                            ),
+                                            const Text(
+                                              'Começar outro',
+                                              textAlign: TextAlign.center,
+                                            ).expanded(),
+                                            const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.grey_200,
+                                                strokeWidth: 3,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        const Text(
-                                          'Começar outro',
-                                          textAlign: TextAlign.center,
-                                        ).expanded(),
-                                        const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.grey_200,
-                                            strokeWidth: 3,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ).expandedH(),
-                                  const Gap(30),
-                                  const Text('Clique para voltar para tela inicial:'),
-                                  const Gap(10),
-                                  Button.secondary(
-                                    onPressed: () async {},
-                                    child: const Text('Sair'),
-                                  ).expandedH(),
-                                ],
+                                      ).expandedH(),
+                                      const Gap(30),
+                                      const Text('Clique para voltar para tela inicial:'),
+                                      const Gap(10),
+                                      Button.secondary(
+                                        onPressed: () async {},
+                                        child: const Text('Sair'),
+                                      ).expandedH(),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  //LOOSE
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ColoredBox(
+                          color: AppColors.red_600.withOpacity(0.1),
+                        ),
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'VOCE PERDEU',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.red_400,
                               ),
                             ),
-                          ),
-                        ],
+                            const Gap(50),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 30),
+                              child: Panel(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _scoreboard,
+                                    const Gap(30),
+                                    const Text('Clique para jogarem uma nova partida:'),
+                                    const Gap(10),
+                                    Button(
+                                      onPressed: () async {},
+                                      child: Row(
+                                        children: [
+                                          const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.grey_200,
+                                              strokeWidth: 3,
+                                            ),
+                                          ),
+                                          const Text(
+                                            'Começar outro',
+                                            textAlign: TextAlign.center,
+                                          ).expanded(),
+                                          const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.grey_200,
+                                              strokeWidth: 3,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ).expandedH(),
+                                    const Gap(30),
+                                    const Text('Clique para voltar para tela inicial:'),
+                                    const Gap(10),
+                                    Button.secondary(
+                                      onPressed: () async {},
+                                      child: const Text('Sair'),
+                                    ).expandedH(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-                // },
-                //   //LOOSE
-                //   return Container();
-                // }
+                    ],
+                  );
+                }
                 return Container(
                   padding: const EdgeInsets.all(30),
                   child: Column(

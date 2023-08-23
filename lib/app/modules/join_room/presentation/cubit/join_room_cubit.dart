@@ -34,6 +34,7 @@ class JoinRoomCubit extends Cubit<JoinRoomState> {
   void onQRViewCreated(QRViewController controller) {
     controller.scannedDataStream.listen((scanData) async {
       log(scanData.code.toString());
+      print('QR ${scanData.code}');
 
       if (scanData.code != null) {
         var roomId = int.tryParse(scanData.code ?? '');

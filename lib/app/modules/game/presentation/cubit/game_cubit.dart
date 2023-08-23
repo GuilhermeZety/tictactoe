@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -29,9 +30,39 @@ class GameCubit extends Cubit<GameState> {
 
     service.listenReturn((_) {
       room = _;
-      for (var winPossibility in service.winPossibilities) {
-        if (room?.board[winPossibility[0]] != 0 && room?.board[winPossibility[0]] == room?.board[winPossibility[1]] && room?.board[winPossibility[1]] == room?.board[winPossibility[2]]) {
-          emit(GameWin(playerType: room?.board[winPossibility[0]] == 1 ? PlayerType.host : PlayerType.opponent));
+      emit(GameUpdated());
+      if (_ != null && (_.board.where((element) => element == 1).length > 2 || _.board.where((element) => element == 2).length > 2)) {
+        List<int> hostIndex = [];
+        List<int> opponentIndex = [];
+
+        for (var i = 0; i < _.board.length; i++) {
+          if (_.board[i] == 1) {
+            hostIndex.add(i);
+          }
+          if (_.board[i] == 2) {
+            opponentIndex.add(i);
+          }
+        }
+
+        //1
+        if (hostIndex.length > 2) {
+          for (var winPossibility in service.winPossibilities) {
+            if (hostIndex.contains(winPossibility[0]) && hostIndex.contains(winPossibility[1]) && hostIndex.contains(winPossibility[2])) {
+              emit(const GameWin(playerType: PlayerType.host));
+              return;
+            }
+          }
+        }
+        log('passou 1');
+
+        //2
+        if (opponentIndex.length > 2) {
+          for (var winPossibility in service.winPossibilities) {
+            if (opponentIndex.contains(winPossibility[0]) && opponentIndex.contains(winPossibility[1]) && opponentIndex.contains(winPossibility[2])) {
+              emit(const GameWin(playerType: PlayerType.opponent));
+              return;
+            }
+          }
         }
       }
       if (state is GameInitial) emit(GameUpdated());
