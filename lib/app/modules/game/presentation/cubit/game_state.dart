@@ -16,9 +16,10 @@ final class GameUpdated extends GameState {}
 final class GameExit extends GameState {}
 
 final class GameWin extends GameState {
-  final PlayerType playerType;
+  //IF VALUE IS NULL IS DRAW
+  final String? playerUuid;
 
-  const GameWin({required this.playerType});
+  const GameWin({required this.playerUuid});
 }
 
 final class GameError extends GameState {

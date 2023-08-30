@@ -48,7 +48,7 @@ class GameCubit extends Cubit<GameState> {
         if (hostIndex.length > 2) {
           for (var winPossibility in service.winPossibilities) {
             if (hostIndex.contains(winPossibility[0]) && hostIndex.contains(winPossibility[1]) && hostIndex.contains(winPossibility[2])) {
-              emit(const GameWin(playerType: PlayerType.host));
+              emit(GameWin(playerUuid: room!.hostUuid));
               return;
             }
           }
@@ -59,10 +59,15 @@ class GameCubit extends Cubit<GameState> {
         if (opponentIndex.length > 2) {
           for (var winPossibility in service.winPossibilities) {
             if (opponentIndex.contains(winPossibility[0]) && opponentIndex.contains(winPossibility[1]) && opponentIndex.contains(winPossibility[2])) {
-              emit(const GameWin(playerType: PlayerType.opponent));
+              emit(GameWin(playerUuid: room!.opponentUuid));
               return;
             }
           }
+        }
+
+        if (_.board.every((element) => element != 0)) {
+          emit(const GameWin(playerUuid: null));
+          return;
         }
       }
       if (state is GameInitial) emit(GameUpdated());

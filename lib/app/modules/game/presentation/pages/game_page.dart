@@ -1,6 +1,4 @@
-import 'dart:ui';
 
-import 'package:confetti/confetti.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,13 +9,13 @@ import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
 import 'package:tictactoe/app/core/common/enums/player_type.dart';
-import 'package:tictactoe/app/core/common/extensions/context_extension.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
+import 'package:tictactoe/app/modules/game/presentation/components/result_screen.dart';
 import 'package:tictactoe/app/modules/game/presentation/cubit/game_cubit.dart';
-import 'package:tictactoe/app/ui/components/button.dart';
 import 'package:tictactoe/app/ui/components/custom_checkbox.dart';
 import 'package:tictactoe/app/ui/components/loader.dart';
 import 'package:tictactoe/app/ui/components/panel.dart';
+import 'package:tictactoe/main.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key, required this.roomID});
@@ -30,7 +28,6 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   GameCubit cubit = GameCubit();
-  ConfettiController confettiController = ConfettiController(duration: const Duration(seconds: 2));
 
   @override
   void initState() {
@@ -83,178 +80,13 @@ class _GamePageState extends State<GamePage> {
                   );
                 }
                 if (state is GameWin) {
-                  if (state.playerType == cubit.playerType) {
-                    // // WIN
-                    confettiController.play();
-                    return Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: context.heightPx * 0.2),
-                            child: ConfettiWidget(
-                              confettiController: confettiController,
-                              blastDirectionality: BlastDirectionality.explosive,
-                              shouldLoop: false,
-                              gravity: 0.1,
-                              blastDirection: 0,
-                              maxBlastForce: 40,
-                              minBlastForce: 20,
-                              emissionFrequency: 0.1,
-                              numberOfParticles: 20,
-                            ),
-                          ),
-                        ),
-                        //BLUR LAYER
-                        Positioned.fill(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                            child: Container(
-                              color: Colors.black.withOpacity(0.1),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'VOCE GANHOU!!!',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.green_400,
-                                ),
-                              ),
-                              const Gap(50),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 30),
-                                child: Panel(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      _scoreboard,
-                                      const Gap(30),
-                                      const Text('Clique para jogarem uma nova partida:'),
-                                      const Gap(10),
-                                      Button(
-                                        onPressed: () async {},
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(
-                                              height: 20,
-                                              width: 20,
-                                              child: CircularProgressIndicator(
-                                                color: AppColors.grey_200,
-                                                strokeWidth: 3,
-                                              ),
-                                            ),
-                                            const Text(
-                                              'Começar outro',
-                                              textAlign: TextAlign.center,
-                                            ).expanded(),
-                                            const SizedBox(
-                                              height: 20,
-                                              width: 20,
-                                              child: CircularProgressIndicator(
-                                                color: AppColors.grey_200,
-                                                strokeWidth: 3,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ).expandedH(),
-                                      const Gap(30),
-                                      const Text('Clique para voltar para tela inicial:'),
-                                      const Gap(10),
-                                      Button.secondary(
-                                        onPressed: () async {},
-                                        child: const Text('Sair'),
-                                      ).expandedH(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
+                  if (state.playerUuid == null) {
+                    return ResultScreen.draw(room: cubit.room!);
+                    //IS DRAW
+                  } else if (state.playerUuid == session.userUuid) {
+                    return ResultScreen.win(room: cubit.room!);
                   }
-                  //LOOSE
-                  return Stack(
-                    children: [
-                      Positioned.fill(
-                        child: ColoredBox(
-                          color: AppColors.red_600.withOpacity(0.1),
-                        ),
-                      ),
-                      Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'VOCE PERDEU',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.red_400,
-                              ),
-                            ),
-                            const Gap(50),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 30),
-                              child: Panel(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _scoreboard,
-                                    const Gap(30),
-                                    const Text('Clique para jogarem uma nova partida:'),
-                                    const Gap(10),
-                                    Button(
-                                      onPressed: () async {},
-                                      child: Row(
-                                        children: [
-                                          const SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: CircularProgressIndicator(
-                                              color: AppColors.grey_200,
-                                              strokeWidth: 3,
-                                            ),
-                                          ),
-                                          const Text(
-                                            'Começar outro',
-                                            textAlign: TextAlign.center,
-                                          ).expanded(),
-                                          const SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: CircularProgressIndicator(
-                                              color: AppColors.grey_200,
-                                              strokeWidth: 3,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ).expandedH(),
-                                    const Gap(30),
-                                    const Text('Clique para voltar para tela inicial:'),
-                                    const Gap(10),
-                                    Button.secondary(
-                                      onPressed: () async {},
-                                      child: const Text('Sair'),
-                                    ).expandedH(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
+                  return ResultScreen.loose(room: cubit.room!);
                 }
                 return Container(
                   padding: const EdgeInsets.all(30),
