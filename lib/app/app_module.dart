@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tictactoe/app/core/common/constants/app_routes.dart';
+import 'package:tictactoe/app/core/common/services/connection/connection_service.dart';
 import 'package:tictactoe/app/core/common/services/connection/ping_connection_service_impl.dart';
 import 'package:tictactoe/app/core/common/services/firebase/firebase_service.dart';
 import 'package:tictactoe/app/core/common/services/requests/dio_request_service.dart';
 import 'package:tictactoe/app/core/common/services/requests/request_service.dart';
 import 'package:tictactoe/app/core/common/utils/toasting.dart';
 import 'package:tictactoe/app/core/shared/room/room_logic.dart';
-import 'package:tictactoe/app/modules/game/presentation/pages/game_page.dart';
+import 'package:tictactoe/app/modules/game/game_module.dart';
 import 'package:tictactoe/app/modules/home/presentation/pages/home_page.dart';
 import 'package:tictactoe/app/modules/join_room/presentation/pages/join_room_page.dart';
 import 'package:tictactoe/app/modules/new_room/presentation/pages/new_room_page.dart';
 import 'package:tictactoe/app/modules/not_connection/presenter/not_connection_page.dart';
 import 'package:tictactoe/app/modules/not_found/presentation/pages/not_found_page.dart';
 import 'package:tictactoe/app/modules/splash/presentation/pages/splash_page.dart';
-
-import 'package:tictactoe/app/core/common/services/connection/connection_service.dart';
 
 class AppModule extends Module {
   @override
@@ -60,21 +59,7 @@ class AppModule extends Module {
       transition: TransitionType.fadeIn,
       duration: 300.ms,
     );
-    r.child(
-      '/game/',
-      child: (args) {
-        if (r.args.data is int) {
-          return GamePage(
-            roomID: r.args.data,
-          );
-        }
-        Toasting.error(args, message: 'Erro ao entrar na sala');
-        Modular.to.navigate(AppRoutes.splash);
-        return const SizedBox.shrink();
-      },
-      transition: TransitionType.fadeIn,
-      duration: 300.ms,
-    );
+    r.module('/game/', module: GameModule());
     r.child(
       '/join_room/',
       child: (args) => const JoinRoomPage(),

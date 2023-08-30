@@ -1,4 +1,3 @@
-
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
 import 'package:tictactoe/app/core/common/constants/app_assets.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
+import 'package:tictactoe/app/core/common/constants/app_routes.dart';
 import 'package:tictactoe/app/core/common/enums/player_type.dart';
 import 'package:tictactoe/app/core/common/extensions/widget_extension.dart';
 import 'package:tictactoe/app/modules/game/presentation/components/result_screen.dart';
@@ -27,7 +27,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  GameCubit cubit = GameCubit();
+  GameCubit cubit = Modular.get();
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _GamePageState extends State<GamePage> {
               bloc: cubit,
               listener: (context, state) {
                 if (state is GameExit) {
-                  Modular.to.pop();
+                  Modular.to.pushNamedAndRemoveUntil(AppRoutes.splash, (p0) => false);
                 }
               },
               builder: (context, state) {

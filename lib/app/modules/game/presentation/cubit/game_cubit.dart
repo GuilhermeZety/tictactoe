@@ -29,6 +29,9 @@ class GameCubit extends Cubit<GameState> {
     }
 
     service.listenReturn((_) {
+      if (_ == null) {
+        emit(GameExit());
+      }
       room = _;
       emit(GameUpdated());
       if (_ != null && (_.board.where((element) => element == 1).length > 2 || _.board.where((element) => element == 2).length > 2)) {
