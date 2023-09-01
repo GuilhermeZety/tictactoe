@@ -16,13 +16,13 @@ class GameModule extends Module {
   void routes(RouteManager r) {
     r.child(
       '/',
-      child: (args) {
+      child: (context) {
         if (r.args.data is int) {
           return GamePage(
             roomID: r.args.data,
           );
         }
-        Toasting.error(args, message: 'Erro ao entrar na sala');
+        Toasting.error(context, message: 'Erro ao entrar na sala');
         Modular.to.navigate(AppRoutes.splash);
         return const SizedBox.shrink();
       },

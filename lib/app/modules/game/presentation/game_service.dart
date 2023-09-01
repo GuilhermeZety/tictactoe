@@ -18,6 +18,16 @@ class GameService {
     await Modular.get<UpdateRoom>()(UpdateRoomParams(room: room));
   }
 
+  Future<void> addVictory(RoomEntity room, PlayerType playerType) async {
+    if (playerType == PlayerType.host) {
+      room.victories = (room.victories.$1 + 1, room.victories.$2);
+    } else {
+      room.victories = (room.victories.$1, room.victories.$2 + 1);
+    }
+
+    await Modular.get<UpdateRoom>()(UpdateRoomParams(room: room));
+  }
+
   Future<void> getRoom(int roomId) async {
     final response = await Modular.get<GetRoomStream>()(GetRoomStreamParams(roomId: roomId));
 
@@ -41,11 +51,24 @@ class GameService {
     roomSubscription.cancel();
   }
 
+  Future<void> playNext(RoomEntity room, PlayerType playerType) async {
+    if (playerType == PlayerType.host) {
+      room.replay = (true, room.replay.$2);
+    } else {
+      room.replay = (room.replay.$1, true);
+    }
+    await Modular.get<UpdateRoom>()(UpdateRoomParams(room: room));
+  }
+
+  Future<void> update(RoomEntity room) async {
+    await Modular.get<UpdateRoom>()(UpdateRoomParams(room: room));
+  }
+
   List<List<int>> winPossibilities = [
     [0, 1, 2], // Horizontal
     [3, 4, 5],
     [6, 7, 8],
-    
+
     [0, 3, 6], // Vertical
     [1, 4, 7],
     [2, 5, 8],

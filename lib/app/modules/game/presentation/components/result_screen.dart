@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gap/gap.dart';
 import 'package:tictactoe/app/core/common/constants/app_colors.dart';
@@ -78,101 +79,120 @@ class _ResultScreenState extends State<ResultScreen> {
     if (widget.conffetti) {
       confettiController.play();
     }
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: EdgeInsets.only(top: context.heightPx * 0.2),
-            child: ConfettiWidget(
-              confettiController: confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: false,
-              gravity: 0.1,
-              blastDirection: 0,
-              maxBlastForce: 40,
-              minBlastForce: 20,
-              emissionFrequency: 0.1,
-              numberOfParticles: 20,
-            ),
-          ),
-        ),
-        //BLUR LAYER
-        Positioned.fill(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-            child: Container(
-              color: widget.backgroundColor.withOpacity(backgroundOpacity),
-            ),
-          ),
-        ),
-        Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                widget.message,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: widget.textColor,
+    return BlocBuilder(
+      bloc: cubit,
+      builder: (context, state) {
+        return Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(top: context.heightPx * 0.2),
+                child: ConfettiWidget(
+                  confettiController: confettiController,
+                  blastDirectionality: BlastDirectionality.explosive,
+                  shouldLoop: false,
+                  gravity: 0.1,
+                  blastDirection: 0,
+                  maxBlastForce: 40,
+                  minBlastForce: 20,
+                  emissionFrequency: 0.1,
+                  numberOfParticles: 20,
                 ),
               ),
-              const Gap(50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Panel(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _scoreboard,
-                      const Gap(30),
-                      const Text('Clique para jogarem uma nova partida:'),
-                      const Gap(10),
-                      Button(
-                        onPressed: () async {},
-                        child: Row(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.grey_200,
-                                strokeWidth: 3,
-                              ),
-                            ),
-                            const Text(
-                              'Começar outro',
-                              textAlign: TextAlign.center,
-                            ).expanded(),
-                            const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.grey_200,
-                                strokeWidth: 3,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ).expandedH(),
-                      const Gap(30),
-                      const Text('Clique para voltar para tela inicial:'),
-                      const Gap(10),
-                      Button.secondary(
-                        onPressed: () async {
-                          cubit.exitRoom(context);
-                        },
-                        child: const Text('Sair'),
-                      ).expandedH(),
-                    ],
+            ),
+            //BLUR LAYER
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                child: Container(
+                  color: widget.backgroundColor.withOpacity(backgroundOpacity),
+                ),
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.message,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: widget.textColor,
+                    ),
                   ),
-                ),
+                  const Gap(50),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Panel(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _scoreboard,
+                          const Gap(30),
+                          const Text('Clique para jogarem uma nova partida:'),
+                          const Gap(10),
+                          Button(
+                            onPressed: () async {
+                              cubit.playNext();
+                            },
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: cubit.room?.replay.$1 == true
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: AppColors.green_400,
+                                          size: 20,
+                                        )
+                                      : const CircularProgressIndicator(
+                                          color: AppColors.grey_200,
+                                          strokeWidth: 3,
+                                        ),
+                                ),
+                                const Text(
+                                  'Começar outro',
+                                  textAlign: TextAlign.center,
+                                ).expanded(),
+                                SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: cubit.room?.replay.$2 == true
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: AppColors.green_400,
+                                          size: 20,
+                                        )
+                                      : const CircularProgressIndicator(
+                                          color: AppColors.grey_200,
+                                          strokeWidth: 3,
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ).expandedH(),
+                          const Gap(30),
+                          const Text('Clique para voltar para tela inicial:'),
+                          const Gap(10),
+                          Button.secondary(
+                            onPressed: () async {
+                              cubit.exitRoom(context);
+                            },
+                            child: const Text('Sair'),
+                          ).expandedH(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 

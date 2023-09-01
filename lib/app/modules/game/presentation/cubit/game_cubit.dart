@@ -33,6 +33,10 @@ class GameCubit extends Cubit<GameState> {
         emit(GameExit());
       }
       room = _;
+      if (room != null && room!.replay == (true, true)) {
+        room!.replay = (false, false);
+        service.update(room!);
+      }
       emit(GameUpdated());
       if (_ != null && (_.board.where((element) => element == 1).length > 2 || _.board.where((element) => element == 2).length > 2)) {
         List<int> hostIndex = [];
@@ -56,8 +60,6 @@ class GameCubit extends Cubit<GameState> {
             }
           }
         }
-        log('passou 1');
-
         //2
         if (opponentIndex.length > 2) {
           for (var winPossibility in service.winPossibilities) {
@@ -83,6 +85,48 @@ class GameCubit extends Cubit<GameState> {
     if (room?.board[index] != 0) return;
 
     await service.select(room!, index, playerType);
+
+    if (room!.board.where((element) => element == 1).length > 2 || room!.board.where((element) => element == 2).length > 2) {
+      List<int> hostIndex = [];
+      List<int> opponentIndex = [];
+
+      for (var i = 0; i < room!.board.length; i++) {
+        if (room!.board[i] == 1) {
+          hostIndex.add(i);
+        }
+        if (room!.board[i] == 2) {
+          opponentIndex.add(i);
+        }
+      }
+
+      //1
+      if (hostIndex.length > 2) {
+        for (var winPossibility in service.winPossibilities) {
+          if (hostIndex.contains(winPossibility[0]) && hostIndex.contains(winPossibility[1]) && hostIndex.contains(winPossibility[2])) {
+            log('host WIN');
+            await service.addVictory(room!, PlayerType.host);
+            emit(GameWin(playerUuid: room!.hostUuid));
+            return;
+          }
+        }
+      }
+      //2
+      if (opponentIndex.length > 2) {
+        for (var winPossibility in service.winPossibilities) {
+          if (opponentIndex.contains(winPossibility[0]) && opponentIndex.contains(winPossibility[1]) && opponentIndex.contains(winPossibility[2])) {
+            log('opponent WIN');
+            await service.addVictory(room!, PlayerType.opponent);
+            emit(GameWin(playerUuid: room!.opponentUuid));
+            return;
+          }
+        }
+      }
+
+      if (room!.board.every((element) => element != 0)) {
+        emit(const GameWin(playerUuid: null));
+        return;
+      }
+    }
   }
 
   void exitRoom(BuildContext context) async {
@@ -92,6 +136,15 @@ class GameCubit extends Cubit<GameState> {
       await service.exit(room!.id);
       emit(GameExit());
     }
+  }
+
+  Future<void> playNext() async {
+    await service.playNext(room!, playerType);
+    var stt = state;
+
+    emit(GameUpdated());
+    emit(GameInitial());
+    emit(stt);
   }
 
   void dispose() {
