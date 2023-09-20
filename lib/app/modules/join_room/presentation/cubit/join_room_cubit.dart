@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:tictactoe/app/core/common/errors/failures.dart';
 import 'package:tictactoe/app/modules/join_room/presentation/join_room_service.dart';
+
 part 'join_room_state.dart';
 
 class JoinRoomCubit extends Cubit<JoinRoomState> {

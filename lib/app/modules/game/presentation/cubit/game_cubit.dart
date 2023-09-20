@@ -143,7 +143,6 @@ class GameCubit extends Cubit<GameState> {
     var stt = state;
 
     emit(GameUpdated());
-    emit(GameInitial());
     emit(stt);
   }
 
